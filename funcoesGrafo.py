@@ -1,4 +1,4 @@
-from grafo import Grafo, Nodo, Aresta
+from grafo import Aresta, Grafo, Nodo
 
 
 def adjacente(grafo, nodo1, nodo2):
