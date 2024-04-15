@@ -44,7 +44,7 @@ class Nodo:
       self.lon = longitude
       self.arestas = set()
     else:
-      raise TypeError('Um nodo requer 3 valores do tipo int (inteiro) para id, latitude e longitude')
+      raise TypeError('Um nodo requer 1 valor do tipo inteiro para id, e 2 valores do tipo float para latitude e longitude')
 
   def __eq__(self, nodo):
     if isinstance(nodo, Nodo):
