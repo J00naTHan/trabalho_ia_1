@@ -1,9 +1,11 @@
+from queue import PriorityQueue
+
+
 def dfs(graph, start, goal):
 	# busca em graph, um caminho entre start e goal usando busca em profundidade
-	anNodes = int('1')
-	pathLen = int('1')
-	startToGoal = int('1')
-	return tuple(anNodes, pathLen, startToGoal)
+	assert (start in graph.nodo)
+	assert (goal in graph.nodo)
+
 
 def bfs(graph, start: int, goal: int) -> (int, int, [int]):
 	# busca em graph, um caminho entre start e goal usando busca em largura

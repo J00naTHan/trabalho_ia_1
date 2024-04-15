@@ -37,9 +37,9 @@ class Aresta:
 
 class Nodo:
   def __init__(self, id, longitude, latitude):
-    if isinstance(id, int) and isinstance(longitude, int) and isinstance(latitude, int):
+    if (isinstance(id, int) and (isinstance(longitude, float) and longitude < 0) and
+    (isinstance(latitude, float) and latitude < 0)):
       self.id = id
-      # não sei se latitude e longitude possuem um limite de valor e se são inteiros
       self.lat = latitude
       self.lon = longitude
       self.arestas = set()
