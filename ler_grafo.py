@@ -1,31 +1,43 @@
-while True:
-	try:
-		file = input('Informe o nome do arquivo: ')
-		if not file.endswith('.txt'):
-			file += '.txt'
+from grafo import Grafo
+from nodos import Aresta, Nodo
 
-		with open(file) as f:
-			lines = f.readlines()
-			nodes = []
-			edges = []
-			count = 0
 
-			nmrNodes = None
-			nmrEdges = None
+def lerGrafo(nomeArq):
+  if not isinstance(nomeArq, str):
+    raise TypeError(f"'Erro: tipo recebido: {type(nomeArq)}, tipo esperado: str'")
 
-			for line in lines:
-				line = line.strip().split(' ')
-				if len(line) == 1 and count == 0:
-					nmrNodes = line[0]
-					count += 1
-				elif len(line) == 1 and count == 1:
-					nmrEdges = line[0]
-					count += 1
-				else:
-					if count == 1:
-						nodes.append(line)
-					elif count == 2:
-						edges.append(line)
-			f.close()
-	except:
-		continue
+  if not nomeArq.endswith('.txt'):
+    nomeArq += '.txt'
+
+  with open(nomeArq) as arq:
+    nmrNodos = nmrArestas = cont = 0
+    nodos = []
+    arestas = []
+    linhas = arq.readlines()
+
+    for linha in linhas:
+      linha = linha.strip().split(' ')
+
+      if len(linha) == 1 and cont == 0:
+        nmrNodos = int(linha[0])
+        cont += 1
+      elif len(linha) == 1 and cont == 1:
+        nmrArestas = int(linha[0])
+        cont += 1
+      elif len(linha) == 3:
+        temp = []
+        for item in linha:
+          item = int(item)
+          temp.append(item)
+        if cont == 1:
+          nodo = Nodo(temp[0], temp[1], temp[2])
+          nodos.append(nodo)
+        elif cont == 2:
+          aresta = Aresta(temp[0], temp[1], temp[2])
+          arestas.append(aresta)
+  arq.close()
+
+  grafo = Grafo(nmrNodos, nmrArestas)
+  grafo[nodos] = nodos
+  grafo[arestas] = arestas
+  return grafo
