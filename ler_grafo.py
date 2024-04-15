@@ -1,5 +1,4 @@
-from grafo import Grafo
-from nodos import Aresta, Nodo
+from grafo import Aresta, Grafo, Nodo
 
 
 def lerGrafo(nomeArq):
