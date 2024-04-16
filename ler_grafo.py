@@ -1,7 +1,7 @@
 from grafo import Aresta, Grafo, Nodo
 
 
-def lerGrafo(nomeArq):
+def ler_grafo(nomeArq):
   if not isinstance(nomeArq, str):
     raise TypeError(f"'Erro: tipo recebido: {type(nomeArq)}, tipo esperado: str'")
 
@@ -24,19 +24,26 @@ def lerGrafo(nomeArq):
         nmrArestas = int(linha[0])
         cont += 1
       elif len(linha) == 3:
-        temp = []
-        for item in linha:
-          item = int(item)
-          temp.append(item)
         if cont == 1:
-          nodo = Nodo(temp[0], temp[1], temp[2])
+          id = int(linha[0])
+          lat = float(linha[1])
+          lon = float(linha[2])
+          nodo = Nodo(id, lat, lon)
           nodos.append(nodo)
         elif cont == 2:
-          aresta = Aresta(temp[0], temp[1], temp[2])
+          id1, id2 = int(linha[0]), int(linha[1])
+          if id1 in nodos and id2 in nodos:
+            for nodo in range(0, len(nodos) - 1):
+              if nodos[nodo].id == id1:
+                nodo1 = nodos[nodo]
+              elif nodos[nodo].id == id2:
+                nodo2 = nodos[nodo]
+          custo = int(linha[2])
+          aresta = Aresta(nodo1, nodo2, custo)
           arestas.append(aresta)
   arq.close()
 
   grafo = Grafo(nmrNodos, nmrArestas)
-  grafo[nodos] = nodos
-  grafo[arestas] = arestas
+  grafo['nodos'] = nodos
+  grafo['arestas'] = arestas
   return grafo
