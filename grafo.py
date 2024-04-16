@@ -13,15 +13,22 @@ class Grafo:
     raise KeyError(f'A chave "{chave}" não existe')
 
   def __setitem__(self, chave, valor):
-    if isinstance(valor, set):
-      if chave == 'nodos':
+    if chave == 'nodos':
+      if isinstance(valor, set):
         self.nodos = valor
-      elif chave == 'arestas':
-        self.arestas = valor
+      elif isinstance(valor, list):
+        self.nodos = set(valor)
       else:
-        raise KeyError(f'A chave "{chave}" não existe')
+        raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
+    elif chave == 'arestas':
+      if isinstance(valor, set):
+        self.arestas = valor
+      elif isinstance(valor, list):
+        self.arestas = set(valor)
+      else:
+        raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
     else:
-      raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set')
+      raise KeyError(f'A chave "{chave}" não existe')
 
 
 class Aresta:
