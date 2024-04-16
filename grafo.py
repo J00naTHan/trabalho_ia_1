@@ -18,8 +18,10 @@ class Grafo:
         self.nodos = valor
       elif chave == 'arestas':
         self.arestas = valor
-      raise KeyError(f'A chave "{chave}" não existe')
-    raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set')
+      else:
+        raise KeyError(f'A chave "{chave}" não existe')
+    else:
+      raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set')
 
 
 class Aresta:
@@ -50,3 +52,6 @@ class Nodo:
     if isinstance(nodo, Nodo):
       return self.id == nodo.id
     raise TypeError('A comparação deve ser feita com outro objeto do tipo Nodo')
+
+  def __hash__(self):
+    return hash(self.id)
