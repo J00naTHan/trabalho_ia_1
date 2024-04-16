@@ -45,7 +45,7 @@ class Aresta:
 
 
 class Nodo:
-  def __init__(self, id, longitude, latitude):
+  def __init__(self, id, latitude, longitude):
     if (isinstance(id, int) and (isinstance(longitude, float) and longitude < 0) and
     (isinstance(latitude, float) and latitude < 0)):
       self.id = id
