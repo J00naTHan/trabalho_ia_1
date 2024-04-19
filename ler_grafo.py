@@ -1,11 +1,9 @@
 from grafo import Aresta, Grafo, Nodo
 
 
-# exception customizada para objetos procurados e que não foram encontrados em uma estrutura de dados
 class ObjectNotFoundError(Exception):
   pass
 
-# retorna ValueError para tipo do arquivo
 def ler_grafo(nome_arq):
   if not isinstance(nome_arq, str):
     raise ValueError(f'\nTipo recebido: {type(nome_arq)}, tipo esperado: str\n')
@@ -13,7 +11,6 @@ def ler_grafo(nome_arq):
   if not nome_arq.endswith('.txt'):
     nome_arq += '.txt'
 
-  # retorna FileNotFoundError para arquivo inexistente
   try:
     with open(nome_arq, 'r') as arq:
       nmr_nodos = nmr_arestas = cont = 0
