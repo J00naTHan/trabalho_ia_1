@@ -13,6 +13,7 @@ class Grafo:
     raise KeyError(f'A chave "{chave}" não existe')
 
   def __setitem__(self, chave, valor):
+    # se os nodos ou arestas precisarem ficar na ordem que eles aparecem no arquivo, basta tirar a conversão de tipos, que torna os mesmos em set. "set(...)"
     if chave == 'nodos':
       if isinstance(valor, set):
         self.nodos = valor
