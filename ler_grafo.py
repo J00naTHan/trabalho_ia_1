@@ -1,49 +1,58 @@
 from grafo import Aresta, Grafo, Nodo
 
 
-def ler_grafo(nomeArq):
-  if not isinstance(nomeArq, str):
-    raise TypeError(f"'Erro: tipo recebido: {type(nomeArq)}, tipo esperado: str'")
+# retorna ValueError para tipo do arquivo
 
-  if not nomeArq.endswith('.txt'):
-    nomeArq += '.txt'
+def ler_grafo(nome_arq):
+  if not isinstance(nome_arq, str):
+    raise ValueError(f'\nTipo recebido: {type(nome_arq)}, tipo esperado: str\n')
 
-  with open(nomeArq) as arq:
-    nmrNodos = nmrArestas = cont = 0
-    nodos = []
-    arestas = []
-    linhas = arq.readlines()
+  if not nome_arq.endswith('.txt'):
+    nome_arq += '.txt'
 
-    for linha in linhas:
-      linha = linha.strip().split(' ')
+  # retorna FileNotFoundError para arquivo inexistente
 
-      if len(linha) == 1 and cont == 0:
-        nmrNodos = int(linha[0])
-        cont += 1
-      elif len(linha) == 1 and cont == 1:
-        nmrArestas = int(linha[0])
-        cont += 1
-      elif len(linha) == 3:
-        if cont == 1:
-          id = int(linha[0])
-          lat = float(linha[1])
-          lon = float(linha[2])
-          nodo = Nodo(id, lat, lon)
-          nodos.append(nodo)
-        elif cont == 2:
-          id1, id2 = int(linha[0]), int(linha[1])
-          if id1 in nodos and id2 in nodos:
-            for nodo in range(0, len(nodos) - 1):
-              if nodos[nodo].id == id1:
-                nodo1 = nodos[nodo]
-              elif nodos[nodo].id == id2:
-                nodo2 = nodos[nodo]
-          custo = int(linha[2])
-          aresta = Aresta(nodo1, nodo2, custo)
-          arestas.append(aresta)
-  arq.close()
+  try:
+    with open(nome_arq, 'r') as arq:
+      nmr_nodos = nmr_arestas = cont = 0
+      nodos, arestas, linhas = [], [], arq.readlines()
 
-  grafo = Grafo(nmrNodos, nmrArestas)
+      for linha in linhas:
+        palavras = linha.strip().split(' ')
+
+        if len(palavras) == 1 and cont == 0:
+          nmr_nodos = int(linha[0])
+          cont += 1
+        elif len(palavras) == 1 and cont == 1:
+          nmr_arestas = int(linha[0])
+          cont += 1
+
+        elif len(palavras) == 3:
+
+          if cont == 1:
+            id = int(palavras[0])
+            lat = float(palavras[1])
+            lon = float(palavras[2])
+            nodo = Nodo(id, lat, lon)
+            nodos.append(nodo)
+
+          elif cont == 2:
+            id1, id2 = int(palavras[0]), int(palavras[1])
+            if id1 in nodos and id2 in nodos:
+              for nodo in range(len(nodos)):
+                if nodos[nodo].id == id1:
+                  nodo1 = nodos[nodo]
+                elif nodos[nodo].id == id2:
+                  nodo2 = nodos[nodo]
+            custo = int(palavras[2])
+            aresta = Aresta(nodo1, nodo2, custo)
+            arestas.append(aresta)
+
+    arq.close()
+  except FileNotFoundError:
+    raise FileNotFoundError(f'\nO arquivo "{nome_arq}" não foi encontrado\n')
+
+  grafo = Grafo(nmr_nodos, nmr_arestas)
   grafo['nodos'] = nodos
   grafo['arestas'] = arestas
   return grafo
