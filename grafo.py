@@ -16,17 +16,17 @@ class Grafo:
     if chave == 'nodos':
       if isinstance(valor, set):
         self.nodos = valor
-      elif isinstance(valor, list):
+      elif isinstance(valor, tuple):
         self.nodos = set(valor)
       else:
-        raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
+        raise ValueError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
     elif chave == 'arestas':
       if isinstance(valor, set):
         self.arestas = valor
       elif isinstance(valor, list):
         self.arestas = set(valor)
       else:
-        raise TypeError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
+        raise ValueError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
     else:
       raise KeyError(f'A chave "{chave}" não existe')
 
@@ -46,19 +46,20 @@ class Aresta:
 
 class Nodo:
   def __init__(self, id, latitude, longitude):
-    if (isinstance(id, int) and (isinstance(longitude, float) and longitude < 0) and
-    (isinstance(latitude, float) and latitude < 0)):
+    if isinstance(id, int) and isinstance(longitude, float) and isinstance(latitude, float):
       self.id = id
       self.lat = latitude
       self.lon = longitude
       self.arestas = set()
     else:
-      raise TypeError('Um nodo requer 1 valor do tipo inteiro para id, e 2 valores do tipo float para latitude e longitude')
+      raise TypeError('Um nodo requer 3 valores do tipo int (inteiro) para id, latitude e longitude')
 
   def __eq__(self, nodo):
     if isinstance(nodo, Nodo):
       return self.id == nodo.id
-    raise TypeError('A comparação deve ser feita com outro objeto do tipo Nodo')
+    elif isinstance(nodo, int):
+      return self.id == nodo
+    raise TypeError('A comparação deve ser feita com outro objeto do tipo Nodo ou do tipo int (inteiro)')
 
   def __hash__(self):
     return hash(self.id)
