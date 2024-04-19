@@ -1,6 +1,5 @@
 from grafo import Aresta, Grafo, Nodo
 
-
 # retorna ValueError para tipo do arquivo
 
 def ler_grafo(nome_arq):
