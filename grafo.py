@@ -1,35 +1,21 @@
 class Grafo:
-  def __init__(self, nmrNodos = 0, nmrArestas = 0):
-    self.nmrNodos = nmrNodos if isinstance(nmrNodos, int) and nmrNodos >= 0 else 0
-    self.nmrArestas = nmrArestas if isinstance(nmrArestas, int) and nmrArestas >= 0 else 0
-    self.nodos = set()
-    self.arestas = set()
-
-  def __getitem__(self, chave):
-    if chave == 'nodos':
-      return self.nodos
-    elif chave == 'arestas':
-      return self.arestas
-    raise KeyError(f'A chave "{chave}" não existe')
-
-  def __setitem__(self, chave, valor):
-    # se os nodos ou arestas precisarem ficar na ordem que eles aparecem no arquivo, basta tirar a conversão de tipos, que torna os mesmos em set. "set(...)"
-    if chave == 'nodos':
-      if isinstance(valor, set):
-        self.nodos = valor
-      elif isinstance(valor, list):
-        self.nodos = set(valor)
+  def __init__(self, nmrNodos, nmrArestas, nodos):
+    if isinstance(nodos, list) and isinstance(nmrNodos, int) and isinstance(nmrArestas, int):
+      if nmrNodos >= 0 and nmrArestas >= 0:
+        self.nmrNodos = nmrNodos
+        self.nodos = {}
       else:
-        raise ValueError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
-    elif chave == 'arestas':
-      if isinstance(valor, set):
-        self.arestas = valor
-      elif isinstance(valor, list):
-        self.arestas = set(valor)
-      else:
-        raise ValueError(f'O valor para a chave "{chave}" deve ser do tipo set ou lista')
+        raise Exception('O valor que indica o número de nodos e o valor que indica o número de arestas deve ser maior ou igual a 0')
+      if nmrNodos != len(nodos):
+        raise Exception('O valor que indica o número de nodos deve ser igual a quantidade de nodos inseridos')
+
+      for nodo in nodos:
+        if isinstance(nodo, Nodo):
+          self.nodos[nodo.id] = {nodo}
+        else:
+          raise Exception('Os nodos devem ser objetos do tipo Nodo')
     else:
-      raise KeyError(f'A chave "{chave}" não existe')
+      raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas e uma lista de nodos')
 
 
 class Aresta:
@@ -37,23 +23,26 @@ class Aresta:
     if isinstance(custo, int) and custo >= -1:
       self.custo = custo
     else:
-      raise ValueError('O custo para essa aresta deve ser do tipo int (inteiro) e deve ser maior ou igual a -1')
+      raise Exception('O custo para essa aresta deve ser do tipo int (inteiro) e deve ser maior ou igual a -1')
     if isinstance(nodo1, Nodo) and isinstance(nodo2, Nodo):
       self.nodo1 = nodo1
       self.nodo2 = nodo2
     else:
-      raise ValueError('Nodos devem ser objetos do tipo Nodo')
+      raise Exception('Nodos devem ser objetos do tipo Nodo')
 
 
 class Nodo:
   def __init__(self, id, latitude, longitude):
-    if (isinstance(id, int) and (isinstance(longitude, float) and longitude < 0) and (isinstance(latitude, float) and latitude < 0)):
+    if isinstance(id, int) and isinstance(longitude, float) and isinstance(latitude, float):
       self.id = id
       self.lat = latitude
       self.lon = longitude
-      self.arestas = set()
+      self.arestas = {}
     else:
-      raise ValueError('Um nodo requer 1 valor do tipo int (inteiro) para id, e 2 valores do tipo float para latitude e longitude')
+      raise Exception('Um nodo requer 1 valor do tipo int (inteiro) para id, e 2 valores do tipo float para latitude e longitude')
+
+  def setArestas(self, arestas):
+    pass
 
   def __eq__(self, nodo):
     if isinstance(nodo, Nodo):
