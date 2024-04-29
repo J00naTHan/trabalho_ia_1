@@ -41,9 +41,6 @@ class Nodo:
     else:
       raise Exception('Um nodo requer 1 valor do tipo int (inteiro) para id, e 2 valores do tipo float para latitude e longitude')
 
-  def setArestas(self, arestas):
-    pass
-
   def __eq__(self, nodo):
     if isinstance(nodo, Nodo):
       return self.id == nodo.id
