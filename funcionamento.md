@@ -36,5 +36,3 @@ lista que conterá os segundos ids de cada uma dessas arestas, visando diminuir 
 - `__eq__(self, id):` Esse método é necessário para verificar se um valor de nodo está presente em alguma estrutura de dados que contenha nodos, sendo um dos dunder methos do Python.
 
 - `hash(self):`
-
-*Métodos das Arestas:*
