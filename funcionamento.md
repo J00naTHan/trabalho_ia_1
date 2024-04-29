@@ -31,6 +31,10 @@ lista que conterá os segundos ids de cada uma dessas arestas, visando diminuir 
 
 - `cost(self, nodo1, nodo2)`: Esse método fará uma verificação se os nodos passados são vizinhos, e se forem, ele acessa as arestas do nodo1, e procura por uma chave igual ao nodo2, e se houver, retorna o valor dela, que será o custo.
 
+### Nodos:
+
+Os nodos...
+
 *Métodos dos Nodos:*
 
 - `__eq__(self, id):` Esse método é necessário para verificar se um valor de nodo está presente em alguma estrutura de dados que contenha nodos, sendo um dos dunder methos do Python.
