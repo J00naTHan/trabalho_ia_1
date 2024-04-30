@@ -20,7 +20,7 @@ class Grafo:
 
 class Aresta:
   def __init__(self, nodo1, nodo2, custo):
-    if isinstance(custo, int) and custo >= 0:
+    if isinstance(custo, float) and custo >= 0:
       self.custo = custo
     else:
       raise Exception('O custo para essa aresta deve ser do tipo int (inteiro) e deve ser maior ou igual a -1')
