@@ -11,11 +11,48 @@ class Graph:
       self.nodos = {}
       for nodo in nodos:
         if isinstance(nodo, Nodo):
-          self.nodos[nodo.id] = nodo
+          self.nodes[nodo.id] = nodo
         else:
           raise Exception('Os nodos devem ser objetos do tipo Nodo')
     else:
       raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas, uma lista de nodos e uma lista de arestas')
+
+  def is_neighbor(self, vertex_1, vertex_2):
+    if isinstance(vertex_1, int) and isinstance(vertex_2, int):
+      try:
+        self.nodes[vertex_1]
+      except KeyError:
+        raise Except('O vértice passado não consta no grafo')
+      try:
+          return bool(vertex_1['edges'][vertex_2])
+      except KeyError:
+          return False
+    raise Exception('Os vértices precisam ser passados como ID\'s do tipo int')
+
+  def neighbors(self, vertex):
+    if isinstance(vertex, int):
+      try:
+        vertex = self.nodes[vertex]
+      except KeyError:
+        raise Exception('O vértice não consta no grafo')
+      return [key for key in vertex['edges'].keys()]
+    raise Exception('O vértice precisa ser um ID do tipo int')
+
+  def cost(self, vertex_1, vertex_2):
+    if isinstance(vertex_1, int) and isinstance(vertex_2):
+      try:
+        vertex_1 = self.nodes[vertex_1]
+        vertex_2 = self.nodes[vertex_2]
+      except KeyError:
+        raise Exception('Pelo menos um dos vértices não consta no grafo')
+      neighbors = self.neighbors(vertex_1)
+      try:
+        index = neighbors.index(vertex_2)
+      except ValueError:
+        raise Exception('Os vértices não são vizinhos')
+      return self.nodes[vertex_1]['edges'][vertex_2]
+    else:
+      raise Exception('Os vértices precisam ser passados como ID\'s do tipo int')
 
 
 class Aresta:
