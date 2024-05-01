@@ -17,7 +17,7 @@ class Graph:
       try:
         self.nodes[vertex_1]
       except KeyError:
-        raise Except('O vértice passado não consta no grafo')
+        raise Exception('O vértice passado não consta no grafo')
       try:
           return bool(self.nodes[vertex_1]['edges'][vertex_2])
       except KeyError:
