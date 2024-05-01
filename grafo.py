@@ -104,6 +104,6 @@ def read_graph(filename: str):
               nodes[from_vertex]['edges'][to_vertex] = cost
               nodes[to_vertex]['edges'][from_vertex] = cost
             except KeyError:
-              raise Exception('You are attempting to acess a node that doesn't exist')
+              raise Exception('You are attempting to acess a node that doesn\'t exist')
         graph = Graph(vertex_count, edge_count, nodes)
     return graph
