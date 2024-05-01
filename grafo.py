@@ -56,15 +56,16 @@ def read_graph(filename: str):
     vertex_count, nodes = int(input_file.readline().strip()), {}
     for _ in range(vertex_count):
       index, latitude, longitude = input_file.readline().strip().split()
-      nodes[index] = {'lat': latitude, 'lon': longitude, 'edges': {}}
+      nodes[int(index)] = {'lat': float(latitude), 'lon': float(longitude), 'edges': {}}
 
     edge_count = int(input_file.readline().strip())
     for _ in range(edge_count):
         from_vertex, to_vertex, cost = input_file.readline().strip().split()
         try:
-          nodes[from_vertex]['edges'][to_vertex] = cost
-          nodes[to_vertex]['edges'][from_vertex] = cost
+          nodes[int(from_vertex)]['edges'][int(to_vertex)] = cost
+          nodes[int(to_vertex)]['edges'][int(from_vertex)] = cost
         except KeyError:
           raise Exception('You are attempting to acess a node that doesn\'t exist')
     graph = Graph(vertex_count, edge_count, nodes)
   return graph
+  
