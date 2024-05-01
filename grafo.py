@@ -1,21 +1,21 @@
-class Grafo:
-  def __init__(self, nmrNodos, nmrArestas, nodos):
-    if isinstance(nodos, list) and isinstance(nmrNodos, int) and isinstance(nmrArestas, int):
+class Graph:
+  def __init__(self, vertex_count, edge_count, nodes):
+    if isinstance(nodos, list) and isinstance(arestas, list) and isinstance(nmrNodos, int) and isinstance(nmrArestas, int):
       if nmrNodos >= 0 and nmrArestas >= 0:
         self.nmrNodos = nmrNodos
-        self.nodos = {}
+        self.nmrArestas = nmrArestas
       else:
         raise Exception('O valor que indica o número de nodos e o valor que indica o número de arestas deve ser maior ou igual a 0')
-      if nmrNodos != len(nodos):
-        raise Exception('O valor que indica o número de nodos deve ser igual a quantidade de nodos inseridos')
-
+      if nmrNodos != len(nodos) or nmrArestas != len(arestas):
+        raise Exception('O valor que indica o número de nodos e o que indica o número de arestas devem ser iguais, respectivamente, a quantidade de nodos e de arestas inseridos')
+      self.nodos = {}
       for nodo in nodos:
         if isinstance(nodo, Nodo):
-          self.nodos[nodo.id] = {nodo}
+          self.nodos[nodo.id] = nodo
         else:
           raise Exception('Os nodos devem ser objetos do tipo Nodo')
     else:
-      raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas e uma lista de nodos')
+      raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas, uma lista de nodos e uma lista de arestas')
 
 
 class Aresta:
@@ -50,3 +50,23 @@ class Nodo:
 
   def __hash__(self):
     return hash(self.id)
+
+
+def read_graph(filename: str):
+    """Lê uma estrutura de grafo de um arquivo e retorna a estrutura"""
+    with open(filename, "rt") as input_file:
+        vertex_count, nodes = int(input_file.readline().strip()), {}
+        for _ in range(vertex_count):
+            index, latitude, longitude = input_file.readline().strip().split()
+            nodes[index] = {'lat': latitude, 'lon': longitude, 'edges': {}}
+            
+        edge_count = int(input_file.readline().strip())
+        for _ in range(edge_count):
+            from_vertex, to_vertex, cost = input_file.readline().strip().split()
+            try:
+              nodes[from_vertex]['edges'][to_vertex] = cost
+              nodes[to_vertex]['edges'][from_vertex] = cost
+            except KeyError:
+              raise Exception('You are attempting to acess a node that doesn't exist')
+        graph = Graph(vertex_count, edge_count, nodes)
+    return graph
