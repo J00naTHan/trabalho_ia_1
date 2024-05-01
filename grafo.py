@@ -36,8 +36,8 @@ class Graph:
   def cost(self, vertex_1, vertex_2):
     if isinstance(vertex_1, int) and isinstance(vertex_2, int):
       try:
-        vertex_1 = self.nodes[vertex_1]
-        vertex_2 = self.nodes[vertex_2]
+        self.nodes[vertex_1]
+        self.nodes[vertex_2]
       except KeyError:
         raise Exception('Pelo menos um dos vértices não consta no grafo')
       neighbors = self.neighbors(vertex_1)
@@ -68,4 +68,3 @@ def read_graph(filename: str):
           raise Exception('You are attempting to acess a node that doesn\'t exist')
     graph = Graph(vertex_count, edge_count, nodes)
   return graph
-  
