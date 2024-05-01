@@ -1,19 +1,14 @@
 class Graph:
   def __init__(self, vertex_count, edge_count, nodes):
-    if isinstance(nodos, list) and isinstance(arestas, list) and isinstance(nmrNodos, int) and isinstance(nmrArestas, int):
-      if nmrNodos >= 0 and nmrArestas >= 0:
-        self.nmrNodos = nmrNodos
-        self.nmrArestas = nmrArestas
+    if isinstance(nodes, dict) and isinstance(vertex_count, int) and isinstance(edge_count, int):
+      if vertex_count >= 0 and edge_count >= 0:
+        self.vertex_count = vertex_count
+        self.edge_count = edge_count
       else:
         raise Exception('O valor que indica o número de nodos e o valor que indica o número de arestas deve ser maior ou igual a 0')
-      if nmrNodos != len(nodos) or nmrArestas != len(arestas):
-        raise Exception('O valor que indica o número de nodos e o que indica o número de arestas devem ser iguais, respectivamente, a quantidade de nodos e de arestas inseridos')
-      self.nodos = {}
-      for nodo in nodos:
-        if isinstance(nodo, Nodo):
-          self.nodes[nodo.id] = nodo
-        else:
-          raise Exception('Os nodos devem ser objetos do tipo Nodo')
+      if vertex_count != len(nodes.keys()):
+        raise Exception('O valor que indica o número de nodos deve ser igual a quantidade de nodos inseridos')
+      self.nodes = nodes
     else:
       raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas, uma lista de nodos e uma lista de arestas')
 
@@ -39,7 +34,7 @@ class Graph:
     raise Exception('O vértice precisa ser um ID do tipo int')
 
   def cost(self, vertex_1, vertex_2):
-    if isinstance(vertex_1, int) and isinstance(vertex_2):
+    if isinstance(vertex_1, int) and isinstance(vertex_2, int):
       try:
         vertex_1 = self.nodes[vertex_1]
         vertex_2 = self.nodes[vertex_2]
@@ -47,7 +42,7 @@ class Graph:
         raise Exception('Pelo menos um dos vértices não consta no grafo')
       neighbors = self.neighbors(vertex_1)
       try:
-        index = neighbors.index(vertex_2)
+        neighbors.index(vertex_2)
       except ValueError:
         raise Exception('Os vértices não são vizinhos')
       return self.nodes[vertex_1]['edges'][vertex_2]
@@ -88,7 +83,7 @@ class Nodo:
   def __hash__(self):
     return hash(self.id)
 
-
+# erro de duplicata de dicionário
 def read_graph(filename: str):
     """Lê uma estrutura de grafo de um arquivo e retorna a estrutura"""
     with open(filename, "rt") as input_file:
