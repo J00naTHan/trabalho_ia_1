@@ -9,9 +9,9 @@ def dfs (Grafo, start, goal):
 
   if not isinstance(Grafo, Grafo):
     raise Exception('O grafo deve ser do tipo Grafo')
-  elif start not in Grafo.nodos:
+  if start not in Grafo.nodos:
     raise Exception('O nodo de início deve ser um nodo registrado no grafo')
-  elif goal not in Grafo.nodos:
+  if goal not in Grafo.nodos:
     raise Exception('O nodo a ser buscado deve ser um nodo registrado no grafo')
 
   visited = set()
@@ -46,8 +46,16 @@ def bfs(graph, start: int, goal: int) -> (int, int, [int]):
 	# busca em graph, um caminho entre start e goal usando busca em largura
 
 
-def branch_and_bound(graph, start: int, goal: int) -> (int, int, [int]):
-	# busca em graph, um caminho entre start e goal usando Branch and Bound
+def branch_and_bound(Grafo, start, goal):
+  if start in Grafo.nodos and goal in Grafo.nodos:
+    best_so_far = ()
+    Q = deque()
+    Q.appendleft(start)
+    while Q:
+      v = Q.pop()
+      if goal == v:
+        retur
+    
 
 
 def manhattan(a, b):
@@ -81,5 +89,29 @@ def a_star(graph, start, goal):
          came_from[next] = current
 
 
-def dijkstra(Graph, start, goal):
-  return (int, int, [int])
+def dijkstra(Grafo, start, goal):
+  dist, prev, Q = {}, {}, deque()
+  for nodo in Grafo.nodos:
+    dist[nodo] = float('inf')
+    prev[nodo] = None
+    Q.appendleft(nodo)
+  dist[start] = 0
+
+  while Q:
+    #u = nodo com menor custo que existe em Q (no caso de uma iteração que está em start, u seria o próprio, pois ele tem custo 0, enquanto os outros tem custo infinito)
+    Q.pop(u)
+
+  # u == goal para baixo não existe no pseudocódigo do professor
+  if u == goal:
+    analisados = 0
+    for key in prev.keys():
+      if prev[key] != None
+	    analisados += 1
+    return (analisados, dist, [prev])
+
+  for v in Graph.vizinhos(u):
+    if v in Q:
+      alt = dist[u] + Graph.arestas[u][v]
+      if alt < dist[v]:
+        dist[v] = alt
+        prev[v] = u
