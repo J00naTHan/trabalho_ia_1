@@ -1,4 +1,4 @@
-"""Lê arquivos que contenham a descrição de um grafo e cria esses grafos."""
+"""Lê arquivos que contenham a descrição de um grafo e então os cria."""
 
 
 class Graph:
@@ -16,7 +16,7 @@ class Graph:
     else:
       raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas, uma lista de nodos e uma lista de arestas')
 
-  def is_neighbor(self, vertex_1, vertex_2):
+  def adjacent(self, vertex_1, vertex_2):
     if isinstance(vertex_1, int) and isinstance(vertex_2, int):
       try:
         self.nodes[vertex_1]
