@@ -103,16 +103,15 @@ def a_star(graph, start, goal):
          came_from[next] = current
 
 
-def dijkstra(Grafo, start, goal):
-  dist, prev, Q = {}, {}, deque()
-  for nodo in Grafo.nodos:
-    dist[nodo] = float('inf')
-    prev[nodo] = None
+def dijkstra(graph, start, goal):
+  dist, prev, Q = {}, {}, deque() #não sei se Q é deque ou priorityqueue, nem se a priorityqueue normal pode ser usada ou tem q ser uma criada
+  for node in graph.nodes:
+    dist[node], prev[node] = float('inf'), None
     Q.appendleft(nodo)
   dist[start] = 0
 
   while Q:
-    #u = nodo com menor custo que existe em Q (no caso de uma iteração que está em start, u seria o próprio, pois ele tem custo 0, enquanto os outros tem custo infinito)
+    u = min(Q)
     Q.pop(u)
 
   # u == goal para baixo não existe no pseudocódigo do professor
