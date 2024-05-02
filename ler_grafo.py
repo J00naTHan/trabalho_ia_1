@@ -1,84 +1,75 @@
-from grafo import Aresta, Grafo, Nodo
+"""Lê arquivos que contenham a descrição de um grafo e cria esses grafos."""
 
 
-class ObjectNotFoundError(Exception):
-  pass
+class Graph:
 
-def ler_grafo(nome_arq):
-  if not isinstance(nome_arq, str):
-    raise ValueError(f'\nTipo recebido: {type(nome_arq)}, tipo esperado: str\n')
+  def __init__(self, vertex_count, edge_count, nodes):
+    """Construtor da classe, valida os nodos inseridos e se a quantia de nodos e arestas inseridos é a mesma dos atributos validadores"""
+    if isinstance(nodes, dict) and isinstance(vertex_count, int) and isinstance(edge_count, int):
+      if vertex_count >= 0 and edge_count >= 0:
+        self.vertex_count = vertex_count
+        self.edge_count = edge_count
+      else:
+        raise Exception('O valor que indica o número de nodos e o valor que indica o número de arestas deve ser maior ou igual a 0')
+      if vertex_count != len(nodes.keys()):
+        raise Exception('O valor que indica o número de nodos deve ser igual a quantidade de nodos inseridos')
+      self.nodes = nodes
+    else:
+      raise Exception('É preciso de um inteiro para representar o número de nodos, outro inteiro para o número de arestas, uma lista de nodos e uma lista de arestas')
 
-  if not nome_arq.endswith('.txt'):
-    nome_arq += '.txt'
+  def is_neighbor(self, vertex_1, vertex_2):
+    if isinstance(vertex_1, int) and isinstance(vertex_2, int):
+      try:
+        self.nodes[vertex_1]
+      except KeyError:
+        raise Exception('O vértice passado não consta no grafo')
+      try:
+          return bool(self.nodes[vertex_1]['edges'][vertex_2])
+      except KeyError:
+          return False
+    raise Exception('Os vértices precisam ser passados como ID\'s do tipo int')
 
-  try:
-    with open(nome_arq, 'r') as arq:
-      nmr_nodos = nmr_arestas = cont = 0
-      nodos, arestas, linhas = [], [], arq.readlines()
+  def neighbors(self, vertex):
+    if isinstance(vertex, int):
+      try:
+        vertex = self.nodes[vertex]
+      except KeyError:
+        raise Exception('O vértice não consta no grafo')
+      return [key for key in vertex['edges'].keys()]
+    raise Exception('O vértice precisa ser um ID do tipo int')
 
-      for linha in linhas:
-        if linha.isspace():
-          continue
+  def cost(self, vertex_1, vertex_2):
+    if isinstance(vertex_1, int) and isinstance(vertex_2, int):
+      try:
+        self.nodes[vertex_1]
+        self.nodes[vertex_2]
+      except KeyError:
+        raise Exception('Pelo menos um dos vértices não consta no grafo')
+      neighbors = self.neighbors(vertex_1)
+      try:
+        neighbors.index(vertex_2)
+      except ValueError:
+        raise Exception('Os vértices não são vizinhos')
+      return self.nodes[vertex_1]['edges'][vertex_2]
+    else:
+      raise Exception('Os vértices precisam ser passados como ID\'s do tipo int')
 
-        palavras = linha.strip().split(' ')
 
-        if len(palavras) == 1 and cont == 0:
-          try:
-            nmr_nodos = int(linha[0])
-          except ValueError:
-            raise ValueError('\nO valor que deveria corresponder ao NÚMERO DE NODOS, encontrado no arquivo, não pode ser convertido para int (inteiro)\n')
-          cont += 1
+def read_graph(filename: str):
+  """Lê uma estrutura de grafo de um arquivo e retorna a estrutura"""
+  with open(filename, "rt") as input_file:
+    vertex_count, nodes = int(input_file.readline().strip()), {}
+    for _ in range(vertex_count):
+      index, latitude, longitude = input_file.readline().strip().split()
+      nodes[int(index)] = {'lat': float(latitude), 'lon': float(longitude), 'edges': {}}
 
-        elif len(palavras) == 1 and cont == 1:
-          try:
-            nmr_arestas = int(linha[0])
-          except ValueError:
-            raise ValueError('\nO valor que deveria corresponder ao NÚMERO DE ARESTAS, encontrado no arquivo, não pode ser convertido para int (inteiro)\n')
-          cont += 1
-
-        elif len(palavras) == 3:
-
-          if cont == 1:
-            try:
-              id = int(palavras[0])
-            except ValueError:
-              raise ValueError('\nO valor que deveria corresponder ao ID de um nodo, encontrado no arquivo, não pode ser convertido para int (inteiro)\n')
-            try:
-              lat = float(palavras[1])
-            except ValueError:
-              raise ValueError('\nO valor que deveria corresponder a LATITUDE de um nodo, encontrado no arquivo, não pode ser convertido para float\n')
-            try:
-              lon = float(palavras[2])
-            except ValueError:
-              raise ValueError('\nO valor que deveria corresponder a LONGITUDE de um nodo, encontrado no arquivo, não pode ser convertido para float\n')
-            nodo = Nodo(id, lat, lon)
-            nodos.append(nodo)
-
-          elif cont == 2:
-            try:
-              id1, id2 = int(palavras[0]), int(palavras[1])
-            except ValueError:
-              raise ValueError('\nO valor que deveria corresponder ao ID DE NO MÍNIMO UM DOS NODOS EXTREMOS DE UMA ARESTA, encontrado no arquivo, não pode ser convertido para int (inteiro)\n')
-            if id1 in nodos and id2 in nodos:
-              for nodo in range(len(nodos)):
-                if nodos[nodo].id == id1:
-                  nodo1 = nodos[nodo]
-                elif nodos[nodo].id == id2:
-                  nodo2 = nodos[nodo]
-            else:
-              raise ObjectNotFoundError('\nUm dos nós que deveria corresponder aos extremos de uma aresta não foi encontrado na lista de nodos\n')
-            try:
-              custo = int(palavras[2])
-            except ValueError:
-              raise ValueError('\nO valor que deveria corresponder ao CUSTO de uma aresta não pode ser convertido para int (inteiro)\n')
-            aresta = Aresta(nodo1, nodo2, custo)
-            arestas.append(aresta)
-
-    arq.close()
-  except FileNotFoundError:
-    raise FileNotFoundError(f'\nO arquivo "{nome_arq}" não foi encontrado\n')
-
-  grafo = Grafo(nmr_nodos, nmr_arestas)
-  grafo['nodos'] = nodos
-  grafo['arestas'] = arestas
-  return grafo
+    edge_count = int(input_file.readline().strip())
+    for _ in range(edge_count):
+        from_vertex, to_vertex, cost = input_file.readline().strip().split()
+        try:
+          nodes[int(from_vertex)]['edges'][int(to_vertex)] = cost
+          nodes[int(to_vertex)]['edges'][int(from_vertex)] = cost
+        except KeyError:
+          raise Exception('You are attempting to acess a node that doesn\'t exist')
+    graph = Graph(vertex_count, edge_count, nodes)
+  return graph
