@@ -42,19 +42,33 @@ def dfs (Grafo, start, goal):
         stack.append(u)
 
 
-def bfs(graph, start: int, goal: int) -> (int, int, [int]):
-	# busca em graph, um caminho entre start e goal usando busca em largura
-
-
-def branch_and_bound(Grafo, start, goal):
-  if start in Grafo.nodos and goal in Grafo.nodos:
-    best_so_far = ()
-    Q = deque()
+def bfs(graph, start, goal):
+    if not start in graph.nodes or not goal in graph.nodes:
+        raise Exception('Os nodos de largada e chegada não existem no grafo')
+    Q, visited = deque(), set()
     Q.appendleft(start)
     while Q:
-      v = Q.pop()
-      if goal == v:
-        retur
+        v = Q.pop()
+	if goal == v:
+	    return ()
+	if v not in visited:
+	    visited.add(v)
+	    for u in graph.neighbors(v):
+                Q.appendleft(u)
+
+
+def branch_and_bound(graph, start, goal):
+    if start not in graph.nodes and goal not in graph.nodes:
+        raise Exception('Os nodos de largada e chegada não existem no grafo')
+    best_so_far, Q = (None, float('inf')), deque()
+    Q = deque()
+    Q.appendleft(start)
+
+    while Q:
+        v = Q.pop()
+
+        if goal == v:
+            return ()
     
 
 
