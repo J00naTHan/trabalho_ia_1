@@ -4,7 +4,6 @@
 class Graph:
 
   def __init__(self, vertex_count, edge_count, nodes):
-    """Construtor da classe, valida os nodos inseridos e se a quantia de nodos e arestas inseridos é a mesma dos atributos validadores"""
     if isinstance(nodes, dict) and isinstance(vertex_count, int) and isinstance(edge_count, int):
       if vertex_count >= 0 and edge_count >= 0:
         self.vertex_count = vertex_count
