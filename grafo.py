@@ -69,6 +69,6 @@ def read_graph(filename: str):
             nodes[int(from_vertex)]['edges'][int(to_vertex)] = float(cost)
             nodes[int(to_vertex)]['edges'][int(from_vertex)] = float(cost)
           except KeyError:
-            raise Exception('You are attempting to acess a node that doesn\'t exist')
+            raise Exception('Você está tentando acessar um nodo que não existe')
       graph = Graph(vertex_count, edge_count, nodes)
     return graph
